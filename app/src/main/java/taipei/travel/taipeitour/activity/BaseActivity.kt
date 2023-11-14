@@ -1,12 +1,14 @@
-package taipei.travel.taipeitour.activities
+package taipei.travel.taipeitour.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import taipei.travel.taipeitour.utilities.Utils
+import taipei.travel.taipeitour.util.Utils
 
 abstract class BaseActivity : AppCompatActivity() {
     protected abstract val vb: ViewBinding
+
+    protected val fm = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

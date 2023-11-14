@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TaipeiTour</string>
+
+    <string name="text_testing">This is a testing text</string>
 </resources>
