@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">臺北旅遊</string>
+
+    <string name="text_testing">這是測試文字</string>
+
+    <string name="text_failed_to_get_data_from_server">無法從伺服器取得資料</string>
+</resources>

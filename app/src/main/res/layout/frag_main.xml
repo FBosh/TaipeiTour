@@ -23,14 +23,20 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ib_translate"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        android:scaleType="centerCrop"
+        style="@style/toolbar_button"
         android:src="@mipmap/ic_translate_adaptive_fore"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="@id/toolbar" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/ib_refresh"
+        style="@style/toolbar_button"
+        android:src="@mipmap/ic_refresh_adaptive_fore"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/ib_translate"
         app:layout_constraintTop_toTopOf="@id/toolbar" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -44,6 +50,26 @@
         android:id="@+id/rv_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_failed_to_get_data_from_server"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -33,6 +33,8 @@ abstract class BaseFragment : Fragment() {
 
     protected fun getColor(@ColorRes colorRes: Int) = Utils.getColor(requireActivity(), colorRes)
 
+    protected fun performBackPressed() = requireActivity().onBackPressedDispatcher.onBackPressed()
+
     protected abstract fun init()
 
     protected abstract fun initUI()

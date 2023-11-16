@@ -21,4 +21,8 @@
     <color name="color_translucent_black">#80000000</color>
 
     <color name="color_demo">#4896EB</color>
+
+    <color name="color_divider_gray">#E0E0E0</color>
+    <color name="color_primary">#00D1B4</color>
+    <color name="color_primary_variant">#05ADA2</color>
 </resources>

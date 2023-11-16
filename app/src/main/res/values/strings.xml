@@ -2,4 +2,6 @@
     <string name="app_name">TaipeiTour</string>
 
     <string name="text_testing">This is a testing text</string>
+
+    <string name="text_failed_to_get_data_from_server">Failed to retrieve data from server</string>
 </resources>

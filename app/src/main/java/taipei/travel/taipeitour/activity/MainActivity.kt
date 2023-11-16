@@ -9,6 +9,6 @@ class MainActivity : BaseActivity() {
     override val vb by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun initUI() {
-        Utils.navigateFragment(fm, vb.layoutFragContainer.id, MainFragment(), FragTransType.REPLACE)
+        Utils.navigateFragment(fm, MainFragment(), FragTransType.REPLACE, vb.layoutFragContainer.id)
     }
 }

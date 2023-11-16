@@ -2,12 +2,14 @@ package taipei.travel.taipeitour.util
 
 import android.content.Context
 import android.util.Log
+import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import taipei.travel.taipeitour.FragTransType
 import taipei.travel.taipeitour.fragment.BaseFragment
+import taipei.travel.taipeitour.fragment.MainFragment
 
 class Utils {
     companion object {
@@ -17,11 +19,19 @@ class Utils {
 
         fun navigateFragment(
                 fragmentManager: FragmentManager,
-                @IdRes containerId: Int,
                 fragment: BaseFragment,
-                navigateWay: FragTransType
+                navigateWay: FragTransType,
+                @IdRes containerId: Int = View.NO_ID
         ) {
+            if (containerId == View.NO_ID) {
+                if (navigateWay == FragTransType.ADD || navigateWay == FragTransType.REPLACE) {
+                    throw IllegalArgumentException("Function navigateFragment is missing containerId!!")
+                }
+            }
+
             fragmentManager.beginTransaction().apply {
+                if (fragment !is MainFragment) addToBackStack(null)
+
                 when (navigateWay) {
                     FragTransType.ADD -> add(containerId, fragment, fragment.layoutRes.toString())
                     FragTransType.REPLACE -> replace(containerId, fragment, fragment.layoutRes.toString())

@@ -16,12 +16,20 @@ enum class FragTransType {
     SHOW
 }
 
-enum class Language {
-    ZH_TW, ZH_CN, EN, JA, KO, ES, ID, TH, VI;
+enum class Language(val title: String, val description: String) {
+    ZH_TW("臺北旅遊", "繁體中文"),
+    ZH_CN("台北旅游", "简体中文"),
+    EN("Taipei travel", "English"),
+    JA("台北旅行", "日本語"),
+    KO("타이페이 여행", "한국어"),
+    ES("viajes a taipei", "Español"),
+    ID("perjalanan Taipei", "Bahasa Indonesia"),
+    TH("เที่ยวไทเป", "ไทย"),
+    VI("du lịch Đài Bắc", "Tiếng Việt");
 
     companion object {
-        fun getSafety(strValue: String): Language {
-            return entries.find { it.toString() == strValue.lowercase() } ?: ZH_TW
+        fun getByDescriptionSafely(strValue: String): Language {
+            return entries.find { it.description == strValue } ?: ZH_TW
         }
     }
 
