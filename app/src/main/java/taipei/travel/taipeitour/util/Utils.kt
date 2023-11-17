@@ -7,8 +7,8 @@ import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import taipei.travel.taipeitour.BaseFragment
 import taipei.travel.taipeitour.FragTransType
-import taipei.travel.taipeitour.fragment.BaseFragment
 import taipei.travel.taipeitour.fragment.MainFragment
 
 class Utils {

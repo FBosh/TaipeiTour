@@ -3,14 +3,16 @@ package taipei.travel.taipeitour.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import taipei.travel.taipeitour.databinding.RecyclableTourBinding
+import taipei.travel.taipeitour.databinding.RecyclableAttractionBinding
 import taipei.travel.taipeitour.model.Attraction
 
 class AttractionsAdapter : BaseRecyclerViewAdapter<AttractionsAdapter.ViewHolder>() {
     private val attractions = arrayListOf<Attraction>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(RecyclableTourBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        val inflater = LayoutInflater.from(parent.context)
+
+        return ViewHolder(RecyclableAttractionBinding.inflate(inflater, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -30,7 +32,7 @@ class AttractionsAdapter : BaseRecyclerViewAdapter<AttractionsAdapter.ViewHolder
         attractions.clear()
     }
 
-    inner class ViewHolder(private val vb: RecyclableTourBinding) : RecyclerView.ViewHolder(vb.root) {
+    inner class ViewHolder(private val vb: RecyclableAttractionBinding) : RecyclerView.ViewHolder(vb.root) {
         fun bind(attraction: Attraction) {
             val strImageURL = attraction.images.firstOrNull()?.src ?: ""
 

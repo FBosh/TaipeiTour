@@ -1,5 +1,6 @@
 package taipei.travel.taipeitour.activity
 
+import taipei.travel.taipeitour.BaseActivity
 import taipei.travel.taipeitour.FragTransType
 import taipei.travel.taipeitour.databinding.ActivityMainBinding
 import taipei.travel.taipeitour.fragment.MainFragment

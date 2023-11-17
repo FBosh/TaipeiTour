@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import taipei.travel.taipeitour.BaseFragment
 import taipei.travel.taipeitour.FragTransType
 import taipei.travel.taipeitour.Language
 import taipei.travel.taipeitour.R
@@ -34,7 +35,7 @@ class MainFragment(
         vb.toolbar.apply {
             //Test
             setOnClickListener {
-                Utils.navigateFragment(fm, TourFragment(), FragTransType.ADD, vb.root.id)
+                Utils.navigateFragment(fm, AttractionFragment(), FragTransType.ADD, vb.root.id)
             }
         }
 

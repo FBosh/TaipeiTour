@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour.activity
+package taipei.travel.taipeitour
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

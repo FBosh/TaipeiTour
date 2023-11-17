@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour.fragment
+package taipei.travel.taipeitour
 
 import android.os.Bundle
 import android.view.LayoutInflater

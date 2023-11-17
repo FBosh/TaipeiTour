@@ -1,5 +1,6 @@
 package taipei.travel.taipeitour.fragment
 
+import taipei.travel.taipeitour.BaseFragment
 import taipei.travel.taipeitour.R
 import taipei.travel.taipeitour.databinding.FragWebViewBinding
 
