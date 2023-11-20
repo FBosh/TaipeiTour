@@ -1,8 +1,11 @@
 package taipei.travel.taipeitour.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.util.Date
 
+@Parcelize
 data class Tour(
         val id: Int,
 
@@ -43,4 +46,4 @@ data class Tour(
         val modified: Date,
 
         val files: List<File>
-)
+) : Parcelable

@@ -1,8 +1,11 @@
 package taipei.travel.taipeitour.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.util.Date
 
+@Parcelize
 data class Calendar(
         @SerializedName("distric")
         val district: String,
@@ -47,4 +50,4 @@ data class Calendar(
         val files: List<File>,
 
         val links: List<Link>
-)
+) : Parcelable
