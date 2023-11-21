@@ -1,23 +1,10 @@
 package taipei.travel.taipeitour.adapter
 
-import android.content.Context
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import taipei.travel.taipeitour.R
 import taipei.travel.taipeitour.util.Utils
 
 abstract class BaseRecyclerViewAdapter<ViewHolder : RecyclerView.ViewHolder> : RecyclerView.Adapter<ViewHolder>() {
     protected fun printBoshLog(msg: String) = Utils.printBoshLog(msg)
-
-    protected fun setImageViewByGlide(context: Context, strURL: String, imageview: ImageView): ImageView {
-        return Glide.with(context)
-                .load(strURL)
-                .placeholder(R.mipmap.placeholder_pic)
-                .centerCrop()
-                .into(imageview)
-                .view
-    }
 }
 
 //region <Former codes>

@@ -3,10 +3,13 @@ package taipei.travel.taipeitour.util
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import com.bumptech.glide.Glide
 import taipei.travel.taipeitour.BaseFragment
 import taipei.travel.taipeitour.FragTransType
 import taipei.travel.taipeitour.fragment.MainFragment
@@ -42,6 +45,20 @@ class Utils {
                     FragTransType.SHOW -> show(fragment)
                 }
             }.commit()
+        }
+
+        fun setImageViewByGlide(
+                context: Context,
+                strURL: String,
+                @DrawableRes placeholder: Int,
+                imageview: ImageView
+        ) {
+            Glide.with(context)
+                    .load(strURL)
+                    .placeholder(placeholder)
+                    .centerCrop()
+                    .into(imageview)
+                    .view
         }
     }
 }

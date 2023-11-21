@@ -40,21 +40,21 @@
         app:layout_constraintGuide_percent="0.1" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_tour"
+        android:id="@+id/iv_attraction"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/tv_tour_info"
+        app:layout_constraintBottom_toTopOf="@id/tv_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_tour_info"
+        android:id="@+id/tv_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_tour" />
+        app:layout_constraintTop_toBottomOf="@id/iv_attraction" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

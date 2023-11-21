@@ -3,8 +3,10 @@ package taipei.travel.taipeitour.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import taipei.travel.taipeitour.R
 import taipei.travel.taipeitour.databinding.RecyclableAttractionBinding
 import taipei.travel.taipeitour.model.Attraction
+import taipei.travel.taipeitour.util.Utils
 
 class AttractionsAdapter : BaseRecyclerViewAdapter<AttractionsAdapter.ViewHolder>() {
     private val attractions = arrayListOf<Attraction>()
@@ -38,7 +40,7 @@ class AttractionsAdapter : BaseRecyclerViewAdapter<AttractionsAdapter.ViewHolder
 
             vb.tvTitle.text = attraction.name
             vb.tvInfo.text = attraction.introduction
-            setImageViewByGlide(vb.root.context, strImageURL, vb.ivTour)
+            Utils.setImageViewByGlide(vb.root.context, strImageURL, R.mipmap.placeholder_pic, vb.ivAttraction)
         }
     }
 }
