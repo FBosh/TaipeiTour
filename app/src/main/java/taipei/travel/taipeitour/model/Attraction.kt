@@ -77,4 +77,16 @@ data class Attraction(
         val files: List<File>,
 
         val links: List<Link>
-) : Parcelable
+) : Parcelable {
+    companion object {
+        val UNDEFINED = Attraction(
+                -1, "", null,
+                -1, "", "", "", "", "",
+                "", "", "", "", Double.NaN, Double.NaN, "", "",
+                "", "", "", Date(), "",
+                listOf(), listOf(), listOf(), listOf(), listOf(), listOf(), listOf()
+        )
+    }
+
+    fun isValid() = this != UNDEFINED
+}

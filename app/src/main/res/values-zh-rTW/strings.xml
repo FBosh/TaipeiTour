@@ -4,5 +4,20 @@
 
     <string name="text_testing">這是測試文字</string>
 
-    <string name="text_failed_to_get_data_from_server">無法從伺服器取得資料</string>
+    <string name="text_unknown_error">未知錯誤</string>
+    <string name="text_fetching_error">無法從伺服器取得資料</string>
+    <string name="text_timeout_error">連線逾時</string>
+
+    <string name="text_loading">載入中…</string>
+    <string name="text_untitled">無標題</string>
+
+    <string name="text_language">語言</string>
+    <string name="text_refresh">重新整理</string>
+    <string name="text_back">返回</string>
+    <string name="text_close">關閉</string>
+
+    <string name="text_invalid_attraction">無效的景點</string>
+    <string name="text_invalid_link">無效的連結</string>
+
+    <string name="text_link_copied">連結已複製</string>
 </resources>

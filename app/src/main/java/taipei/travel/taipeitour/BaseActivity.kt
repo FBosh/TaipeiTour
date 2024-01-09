@@ -1,28 +1,69 @@
 package taipei.travel.taipeitour
 
+import android.content.res.Configuration
 import android.os.Bundle
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewbinding.ViewBinding
-import taipei.travel.taipeitour.util.Utils
+import taipei.travel.taipeitour.util.BoshLogs
 
-abstract class BaseActivity : AppCompatActivity() {
-    protected abstract val vb: ViewBinding
-
-    protected val fm = supportFragmentManager
-
+abstract class BaseActivity : AppCompatActivity(), BoshLogs {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        init()
+        printLog("onCreate, savedInstanceState= $savedInstanceState")
     }
 
-    private fun init() {
-        setContentView(vb.root)
+    override fun onRestart() {
+        super.onRestart()
 
-        initUI()
+        printLog("onRestart")
     }
 
-    protected fun printBoshLog(msg: String) = Utils.printBoshLog(msg)
+    override fun onStart() {
+        super.onStart()
 
-    protected abstract fun initUI()
+        printLog("onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        printLog("onResume")
+    }
+
+    override fun onPause() {
+        printLog("onPause")
+
+        super.onPause()
+    }
+
+    override fun onStop() {
+        printLog("onStop")
+
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        printLog("onDestroy")
+
+        super.onDestroy()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        printLog("onConfigurationChanged, newConfig= $newConfig")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        printLog("onSaveInstanceState, outState= $outState")
+    }
+
+    protected fun startFirstFragment(@IdRes containerId: Int, firstFragment: BaseFragment<*>) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(containerId, firstFragment, firstFragment.javaClass.simpleName)
+        }.commit()
+    }
 }

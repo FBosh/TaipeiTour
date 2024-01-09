@@ -8,53 +8,132 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/toolbar"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal"
+        app:layout_constraintBottom_toTopOf="@id/guideline_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ib_backward"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_arrow_back_adaptive_fore"
+        style="@style/toolbar_button"
+        android:scaleType="center"
+        android:src="@mipmap/ic_arrow_left"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintStart_toStartOf="@id/toolbar"
         app:layout_constraintTop_toTopOf="@id/toolbar" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
         style="@style/toolbar_title"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/padding_default"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="@id/toolbar"
         app:layout_constraintStart_toEndOf="@id/ib_backward"
         app:layout_constraintTop_toTopOf="@id/toolbar" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal"
+        android:id="@+id/guideline_toolbar"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_attraction"
+    <ScrollView
+        android:id="@+id/sv_info"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/tv_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_attraction" />
+        app:layout_constraintTop_toBottomOf="@id/guideline_toolbar">
+
+        <LinearLayout
+            android:id="@id/layout_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_attraction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_default" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/layout_tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tab_layout_height"
+                app:tabBackground="@drawable/tab_background_dot"
+                app:tabGravity="center"
+                app:tabIndicator="@drawable/tab_indicator_dot"
+                app:tabIndicatorGravity="center"
+                app:tabPaddingEnd="@dimen/padding_default"
+                app:tabPaddingStart="@dimen/padding_default"
+                app:tabRippleColor="@null" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_intro"
+                style="@style/tv_info"
+                android:layout_width="match_parent"
+                android:padding="@dimen/padding_default" />
+
+            <View
+                android:id="@+id/v_divider_below_intro"
+                style="@style/divider_margin" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_address"
+                style="@style/tv_info"
+                android:layout_width="match_parent"
+                android:padding="@dimen/padding_default" />
+
+            <View
+                android:id="@+id/v_divider_below_address"
+                style="@style/divider_margin" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_url"
+                    style="@style/tv_info"
+                    android:layout_width="wrap_content"
+                    android:padding="@dimen/padding_default"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/iv_url"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_url"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/ic_arrow_right" />
+
+                <View
+                    android:id="@+id/v_divider_below_url"
+                    style="@style/divider_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_url" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_last_updated_time"
+                style="@style/tv_info"
+                android:layout_width="match_parent"
+                android:padding="@dimen/padding_default"
+                android:textSize="@dimen/text_size_min" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

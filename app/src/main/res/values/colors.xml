@@ -22,7 +22,12 @@
 
     <color name="color_demo">#4896EB</color>
 
-    <color name="color_divider_gray">#E0E0E0</color>
     <color name="color_primary">#00D1B4</color>
     <color name="color_primary_variant">#05ADA2</color>
+
+    <color name="color_divider_gray">#E0E0E0</color>
+    <color name="color_tab_indicator_gray">#E5E5E5</color>
+
+    <color name="color_text_default">#666666</color>
+    <color name="color_text_url_gray">#9F9F9F</color>
 </resources>

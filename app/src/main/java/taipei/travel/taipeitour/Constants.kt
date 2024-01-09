@@ -6,32 +6,22 @@ class Constants {
     }
 }
 
-enum class FragTransType {
-    ADD,
-    REPLACE,
-    REMOVE,
-    ATTACH,
-    DETACH,
-    HIDE,
-    SHOW
-}
-
-enum class Language(val title: String, val description: String) {
-    ZH_TW("臺北旅遊", "繁體中文"),
-    ZH_CN("台北旅游", "简体中文"),
-    EN("Taipei travel", "English"),
-    JA("台北旅行", "日本語"),
-    KO("타이페이 여행", "한국어"),
-    ES("viajes a taipei", "Español"),
-    ID("perjalanan Taipei", "Bahasa Indonesia"),
-    TH("เที่ยวไทเป", "ไทย"),
-    VI("du lịch Đài Bắc", "Tiếng Việt");
+enum class Language(val localeName: String, val title: String) {
+    ZH_TW("繁體中文", "臺北旅遊"),
+    ZH_CN("简体中文", "台北旅游"),
+    EN("English", "Taipei travel"),
+    JA("日本語", "台北旅行"),
+    KO("한국어", "타이페이 여행"),
+    ES("Español", "viajes a taipei"),
+    ID("Bahasa Indonesia", "perjalanan Taipei"),
+    TH("ไทย", "เที่ยวไทเป"),
+    VI("Tiếng Việt", "du lịch Đài Bắc");
 
     companion object {
-        fun getByDescriptionSafely(strValue: String): Language {
-            return entries.find { it.description == strValue } ?: ZH_TW
+        fun getOrDefault(strLocaleName: String): Language {
+            return entries.find { it.localeName == strLocaleName } ?: ZH_TW
         }
     }
 
-    override fun toString() = name.lowercase().replace('_', '-')
+    fun toURL() = name.lowercase().replace('_', '-')
 }

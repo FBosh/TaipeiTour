@@ -1,5 +1,6 @@
 package taipei.travel.taipeitour.fragment
 
+import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,7 +8,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import taipei.travel.taipeitour.BaseFragment
-import taipei.travel.taipeitour.FragTransType
 import taipei.travel.taipeitour.Language
 import taipei.travel.taipeitour.R
 import taipei.travel.taipeitour.adapter.AttractionsAdapter
@@ -15,119 +15,151 @@ import taipei.travel.taipeitour.api.RetrofitSingleton
 import taipei.travel.taipeitour.databinding.FragMainBinding
 import taipei.travel.taipeitour.model.APIResponse
 import taipei.travel.taipeitour.model.Attraction
-import taipei.travel.taipeitour.util.Utils
 
-class MainFragment(
-        private val language: Language = Language.ZH_TW
-) : BaseFragment() {
-    override val layoutRes = R.layout.frag_main
-    override val vb by lazy { FragMainBinding.bind(requireView()) }
-
-    init {
-        printBoshLog("MainFragment initialized= $this")
+class MainFragment : BaseFragment<FragMainBinding>(FragMainBinding::inflate) {
+    private companion object {
+        const val KEY_ATTRACTIONS = "key_attractions"
+        const val KEY_LANGUAGE = "key_language"
     }
 
-    override fun init() {
-        //
+    private var language = Language.ZH_TW
+
+    private val adapterAttractions = AttractionsAdapter {
+        switchFragment(AttractionFragment.newInstance(it))
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        language = Language.valueOf(savedInstanceState?.getString(KEY_LANGUAGE)
+                ?: Language.ZH_TW.name)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState == null) {
+            requestAttractions()
+        } else {
+            savedInstanceState.getParcelableArrayListCompat<Attraction>(KEY_ATTRACTIONS).also { savedAttractions ->
+                if (!savedAttractions.isNullOrEmpty()) {
+                    adapterAttractions.addAll(savedAttractions.toList())
+                } else {
+                    requestAttractions()
+                }
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.apply {
+            putParcelableArrayList(KEY_ATTRACTIONS, adapterAttractions.getAllData())
+            putString(KEY_LANGUAGE, language.name)
+        }
+
+        super.onSaveInstanceState(outState)
     }
 
     override fun initUI() {
-        vb.toolbar.apply {
-            //Test
-            setOnClickListener {
-                Utils.navigateFragment(fm, AttractionFragment(), FragTransType.ADD, vb.root.id)
-            }
-        }
-
-        vb.ibTranslate.setOnClickListener {
-            PopupMenu(requireActivity(), vb.ibTranslate).apply {
-                Language.entries.forEach {
-                    menu.add(it.description)
-                }
-
-                setOnMenuItemClickListener { item ->
-                    val languageSelected = Language.getByDescriptionSafely(item.title.toString()).also {
-                        if (it == language) return@setOnMenuItemClickListener false
-                    }
-
-                    Utils.navigateFragment(fm, this@MainFragment, FragTransType.REMOVE)
-                    Utils.navigateFragment(fm, MainFragment(languageSelected), FragTransType.REPLACE, vb.root.id)
-
-                    true
-                }
-
-                show()
-            }
-        }
-
-        vb.rvContainer.apply {
-            layoutManager = LinearLayoutManager(requireActivity())
-            adapter = AttractionsAdapter()
-            visibility = View.GONE
-        }
-
         vb.tvTitle.text = language.title
 
-        vb.tvError.visibility = View.GONE
-
         vb.ibRefresh.apply {
+            setTooltipTextCompat(getString(R.string.text_refresh))
+
             visibility = View.GONE
+
             setOnClickListener {
                 requestAttractions()
             }
         }
 
-        requestAttractions()
+        vb.ibLanguage.apply {
+            setTooltipTextCompat(getString(R.string.text_language))
+
+            setOnClickListener {
+                PopupMenu(requireActivity(), this).apply {
+                    Language.entries.forEach {
+                        menu.add(it.localeName)
+                    }
+
+                    setOnMenuItemClickListener { item ->
+                        language = Language.getOrDefault(item.title.toString())
+
+                        requestAttractions()
+                        vb.tvTitle.text = language.title
+
+                        true
+                    }
+
+                    show()
+                }
+            }
+        }
+
+        vb.guidelineToolbar.setPercentForOrientation()
+
+        vb.rvContainer.apply {
+            layoutManager = LinearLayoutManager(requireActivity())
+            adapter = adapterAttractions
+        }
+
+        vb.tvError.visibility = View.GONE
+
+        vb.progressbar.visibility = View.GONE
     }
 
     private fun requestAttractions() {
-        RetrofitSingleton.attractionService.getAttractions(language.toString()).apply {
-            printBoshLog("request= ${request()}")
+        RetrofitSingleton.attractionService.getAttractions(language.toURL()).apply {
+            printLog("request= ${request()}")
 
             enqueue(object : Callback<APIResponse<List<Attraction>>> {
                 init {
                     vb.progressbar.visibility = View.VISIBLE
                     vb.tvError.visibility = View.GONE
                     vb.ibRefresh.visibility = View.GONE
+                    adapterAttractions.clear()
+                    vb.ibLanguage.isClickable = false
                 }
 
                 override fun onResponse(call: Call<APIResponse<List<Attraction>>>, response: Response<APIResponse<List<Attraction>>>) {
-                    printBoshLog("onResponse, call= $call}")
-                    printBoshLog("onResponse, response= $response}")
-//                    printBoshLog("onResponse, response.body= ${response.body()}")
-//                    printBoshLog("onResponse, response.isSuccessful= ${response.isSuccessful}")
-//                    printBoshLog("onResponse, response.raw= ${response.raw()}")
-//                    printBoshLog("onResponse, response.errorBody= ${response.errorBody()}")
-//                    printBoshLog("onResponse, response.msg= ${response.message()}")
+                    printLog("onResponse, call= $call}")
+                    printLog("onResponse, response= $response}")
 
                     vb.progressbar.visibility = View.GONE
 
                     if (response.isSuccessful) {
-                        vb.rvContainer.apply {
-                            val result = response.body()?.data ?: listOf()
-
-                            (adapter as AttractionsAdapter).updateAttractions(result)
-                            visibility = View.VISIBLE
-                        }
+                        adapterAttractions.addAll(response.body()?.data ?: listOf())
 
                         vb.tvError.visibility = View.GONE
                         vb.ibRefresh.visibility = View.GONE
                     } else {
-                        vb.rvContainer.visibility = View.GONE
                         vb.tvError.visibility = View.VISIBLE
                         vb.ibRefresh.visibility = View.VISIBLE
+
+                        vb.tvError.text = getString(R.string.text_fetching_error)
                     }
+
+                    vb.ibLanguage.isClickable = true
                 }
 
                 override fun onFailure(call: Call<APIResponse<List<Attraction>>>, throwable: Throwable) {
-                    printBoshLog("onFailure(.....), call= $call")
-                    printBoshLog("onFailure(.....), throwable= $throwable")
+                    printLog("onFailure(.....), call= $call")
+                    printLog("onFailure(.....), throwable= $throwable")
 
                     vb.progressbar.visibility = View.GONE
-                    vb.rvContainer.visibility = View.GONE
 
                     vb.tvError.visibility = View.VISIBLE
                     vb.ibRefresh.visibility = View.VISIBLE
+
+                    vb.ibLanguage.isClickable = true
+
+                    vb.tvError.text = getString(
+                            if (throwable.message?.contains(getString(R.string.text_timeout)) == true) {
+                                R.string.text_timeout_error
+                            } else {
+                                R.string.text_unknown_error
+                            }
+                    )
                 }
             })
         }

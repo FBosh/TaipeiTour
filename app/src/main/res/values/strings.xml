@@ -3,5 +3,25 @@
 
     <string name="text_testing">This is a testing text</string>
 
-    <string name="text_failed_to_get_data_from_server">Failed to retrieve data from server</string>
+    <string name="text_unknown_error">Unknown error</string>
+    <string name="text_fetching_error">Failed to fetch data from server</string>
+    <string name="text_timeout_error">Timeout error</string>
+    <string name="text_timeout" translatable="false">timeout</string>
+
+    <string name="text_address" translatable="false">Address</string>
+    <string name="text_official_site" translatable="false">Official site</string>
+    <string name="text_last_updated_time" translatable="false">Last updated time</string>
+
+    <string name="text_loading">Loading…</string>
+    <string name="text_untitled">Untitled</string>
+
+    <string name="text_language">Language</string>
+    <string name="text_refresh">Refresh</string>
+    <string name="text_back">Back</string>
+    <string name="text_close">Close</string>
+
+    <string name="text_invalid_attraction">Invalid attraction</string>
+    <string name="text_invalid_link">Invalid link</string>
+
+    <string name="text_link_copied">Link copied</string>
 </resources>
