@@ -1,7 +1,7 @@
-package taipei.travel.taipeitour.adapter
+package taipei.travel.taipeitour.view.adapter
 
-import taipei.travel.taipeitour.BaseRecyclerViewAdapter
 import taipei.travel.taipeitour.R
+import taipei.travel.taipeitour.base.BaseRecyclerViewAdapter
 import taipei.travel.taipeitour.databinding.RecyclableImageBinding
 import taipei.travel.taipeitour.util.Utils
 

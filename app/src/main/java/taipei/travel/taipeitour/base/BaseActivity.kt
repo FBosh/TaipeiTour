@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour
+package taipei.travel.taipeitour.base
 
 import android.content.res.Configuration
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour.model
+package taipei.travel.taipeitour.model.data
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.Date
 
 @Parcelize
-data class Calendar(
+data class Activity(
         @SerializedName("distric")
         val district: String,
 
@@ -18,6 +18,13 @@ data class Calendar(
         @SerializedName("elong")
         val longitudeEast: String,
 
+        val organizer: String,
+
+        @SerializedName("co_rganizer")
+        val coOrganizer: String,
+
+        val contact: String,
+
         val tel: String,
 
         val fax: String,
@@ -27,9 +34,6 @@ data class Calendar(
         val traffic: String,
 
         val parking: String,
-
-        @SerializedName("is_major")
-        val isMajor: Boolean,
 
         val id: Int,
 

@@ -1,9 +1,9 @@
-package taipei.travel.taipeitour.api
+package taipei.travel.taipeitour.model.api
 
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
-import taipei.travel.taipeitour.model.*
+import taipei.travel.taipeitour.model.data.*
 
 interface AttractionService {
     @GET("{lang}/Attractions/All")

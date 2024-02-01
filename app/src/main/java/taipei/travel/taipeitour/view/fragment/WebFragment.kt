@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour.fragment
+package taipei.travel.taipeitour.view.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -7,8 +7,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
-import taipei.travel.taipeitour.BaseFragment
 import taipei.travel.taipeitour.R
+import taipei.travel.taipeitour.base.BaseFragment
 import taipei.travel.taipeitour.databinding.FragWebViewBinding
 
 class WebFragment : BaseFragment<FragWebViewBinding>(FragWebViewBinding::inflate) {

@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour
+package taipei.travel.taipeitour.base
 
 import android.content.ClipData
 import android.content.Context
@@ -17,6 +17,8 @@ import androidx.constraintlayout.widget.Guideline
 import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import taipei.travel.taipeitour.App
+import taipei.travel.taipeitour.R
 import taipei.travel.taipeitour.util.BoshLogs
 import taipei.travel.taipeitour.util.Utils
 

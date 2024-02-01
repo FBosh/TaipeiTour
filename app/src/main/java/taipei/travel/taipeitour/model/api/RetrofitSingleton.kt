@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour.api
+package taipei.travel.taipeitour.model.api
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient

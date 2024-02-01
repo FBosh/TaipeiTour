@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour.fragment
+package taipei.travel.taipeitour.view.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import taipei.travel.taipeitour.BaseFragment
 import taipei.travel.taipeitour.Language
 import taipei.travel.taipeitour.R
-import taipei.travel.taipeitour.adapter.AttractionsAdapter
-import taipei.travel.taipeitour.api.RetrofitSingleton
+import taipei.travel.taipeitour.base.BaseFragment
 import taipei.travel.taipeitour.databinding.FragMainBinding
-import taipei.travel.taipeitour.model.APIResponse
-import taipei.travel.taipeitour.model.Attraction
+import taipei.travel.taipeitour.model.api.RetrofitSingleton
+import taipei.travel.taipeitour.model.data.APIResponse
+import taipei.travel.taipeitour.model.data.Attraction
+import taipei.travel.taipeitour.view.adapter.AttractionsAdapter
 
 class MainFragment : BaseFragment<FragMainBinding>(FragMainBinding::inflate) {
     private companion object {

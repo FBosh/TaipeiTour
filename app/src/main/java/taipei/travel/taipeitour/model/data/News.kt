@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour.model
+package taipei.travel.taipeitour.model.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
