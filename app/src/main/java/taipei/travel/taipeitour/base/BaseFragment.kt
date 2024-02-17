@@ -27,7 +27,7 @@ abstract class BaseFragment<VB : ViewBinding>(
 ) : Fragment(), BoshLogs {
     protected companion object {
         const val ARG_ATTRACTION = "key_attraction"
-        const val ARG_ATTRACTION_TITLE = "key_attraction_title"
+        const val ARG_WEB_TITLE = "key_web_title"
         const val ARG_URL = "key_str_url"
     }
 

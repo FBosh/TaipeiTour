@@ -8,11 +8,17 @@ import taipei.travel.taipeitour.util.BoshLogs
 import kotlin.math.max
 
 abstract class BaseRecyclerViewAdapter<VB : ViewBinding, T>(
-        private val inflateVB: (LayoutInflater, ViewGroup, Boolean) -> VB
+        //
 ) : RecyclerView.Adapter<BaseRecyclerViewAdapter<VB, T>.BaseViewHolder>(), BoshLogs {
+    private lateinit var inflateVB: (LayoutInflater, ViewGroup, Boolean) -> VB
+
     private val alData = arrayListOf<T>()
 
-    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    protected constructor(inflateVB: (LayoutInflater, ViewGroup, Boolean) -> VB) : this() {
+        this.inflateVB = inflateVB
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(inflateVB.invoke(LayoutInflater.from(parent.context), parent, false))
     }
 

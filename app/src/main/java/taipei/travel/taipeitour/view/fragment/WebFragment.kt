@@ -15,14 +15,14 @@ class WebFragment : BaseFragment<FragWebViewBinding>(FragWebViewBinding::inflate
     companion object {
         fun newInstance(strTitle: String, strURL: String) = WebFragment().apply {
             arguments = Bundle().apply {
-                putString(ARG_ATTRACTION_TITLE, strTitle)
+                putString(ARG_WEB_TITLE, strTitle)
                 putString(ARG_URL, strURL)
             }
         }
     }
 
-    private val attractionName by lazy {
-        arguments?.getString(ARG_ATTRACTION_TITLE) ?: getString(R.string.text_untitled)
+    private val strTitle by lazy {
+        arguments?.getString(ARG_WEB_TITLE) ?: getString(R.string.text_untitled)
     }
 
     private val strURL by lazy { arguments?.getString(ARG_URL) ?: "" }
@@ -85,7 +85,7 @@ class WebFragment : BaseFragment<FragWebViewBinding>(FragWebViewBinding::inflate
     }
 
     override fun initUI() {
-        vb.tvTitle.text = attractionName
+        vb.tvTitle.text = strTitle
 
         vb.tvUrl.apply {
             text = strURL
