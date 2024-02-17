@@ -1,11 +1,10 @@
-package taipei.travel.taipeitour.model.data
+package taipei.travel.taipeitour.model.api.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Image(
+data class Link(
         val src: String,
-        val sub: String,
-        val ext: String
+        val subject: String
 ) : Parcelable

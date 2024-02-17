@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import taipei.travel.taipeitour.R
 import taipei.travel.taipeitour.base.BaseFragment
 import taipei.travel.taipeitour.databinding.FragAttractionBinding
-import taipei.travel.taipeitour.model.data.Attraction
+import taipei.travel.taipeitour.model.api.data.Attraction
 import taipei.travel.taipeitour.view.adapter.ImagesAdapter
 
 class AttractionFragment : BaseFragment<FragAttractionBinding>(FragAttractionBinding::inflate) {

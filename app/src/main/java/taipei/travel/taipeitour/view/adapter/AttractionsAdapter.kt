@@ -4,7 +4,7 @@ import android.view.View
 import taipei.travel.taipeitour.R
 import taipei.travel.taipeitour.base.BaseRecyclerViewAdapter
 import taipei.travel.taipeitour.databinding.RecyclableAttractionBinding
-import taipei.travel.taipeitour.model.data.Attraction
+import taipei.travel.taipeitour.model.api.data.Attraction
 import taipei.travel.taipeitour.util.Utils
 
 class AttractionsAdapter(

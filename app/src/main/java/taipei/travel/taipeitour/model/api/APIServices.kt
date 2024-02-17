@@ -3,7 +3,8 @@ package taipei.travel.taipeitour.model.api
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
-import taipei.travel.taipeitour.model.data.*
+import taipei.travel.taipeitour.model.api.data.*
+import taipei.travel.taipeitour.model.data.APIResponse
 
 interface AttractionService {
     @GET("{lang}/Attractions/All")

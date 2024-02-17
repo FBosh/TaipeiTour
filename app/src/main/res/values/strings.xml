@@ -24,4 +24,7 @@
     <string name="text_invalid_link">Invalid link</string>
 
     <string name="text_link_copied">Link copied</string>
+
+    <string name="text_news" translatable="false">News</string>
+    <string name="text_attractions" translatable="false">Attractions</string>
 </resources>

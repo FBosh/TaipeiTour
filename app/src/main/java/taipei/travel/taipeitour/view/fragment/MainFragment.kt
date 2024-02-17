@@ -1,67 +1,46 @@
 package taipei.travel.taipeitour.view.fragment
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
-import androidx.recyclerview.widget.LinearLayoutManager
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import taipei.travel.taipeitour.Language
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import taipei.travel.taipeitour.R
 import taipei.travel.taipeitour.base.BaseFragment
+import taipei.travel.taipeitour.base.BaseRecyclerViewAdapter
 import taipei.travel.taipeitour.databinding.FragMainBinding
 import taipei.travel.taipeitour.model.api.RetrofitSingleton
-import taipei.travel.taipeitour.model.data.APIResponse
-import taipei.travel.taipeitour.model.data.Attraction
+import taipei.travel.taipeitour.model.data.OuterRV
+import taipei.travel.taipeitour.util.APIType
+import taipei.travel.taipeitour.util.SelectedLanguage
+import taipei.travel.taipeitour.view.adapter.APIsAdapter
 import taipei.travel.taipeitour.view.adapter.AttractionsAdapter
+import taipei.travel.taipeitour.view.adapter.NewsAdapter
+import taipei.travel.taipeitour.view.custom.CustomizedLinearLayoutManager
+import taipei.travel.taipeitour.viewmodel.MainViewModel
 
 class MainFragment : BaseFragment<FragMainBinding>(FragMainBinding::inflate) {
-    private companion object {
-        const val KEY_ATTRACTIONS = "key_attractions"
-        const val KEY_LANGUAGE = "key_language"
-    }
+    private val vm by viewModels<MainViewModel>()
 
-    private var language = Language.ZH_TW
+    private val adapterNews = NewsAdapter {
+        switchFragment(WebFragment.newInstance(it.title, it.url))
+    }
 
     private val adapterAttractions = AttractionsAdapter {
         switchFragment(AttractionFragment.newInstance(it))
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        language = Language.valueOf(savedInstanceState?.getString(KEY_LANGUAGE)
-                ?: Language.ZH_TW.name)
-    }
+    private val adapterOuter by lazy { APIsAdapter(requireActivity()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null) {
-            requestAttractions()
-        } else {
-            savedInstanceState.getParcelableArrayListCompat<Attraction>(KEY_ATTRACTIONS).also { savedAttractions ->
-                if (!savedAttractions.isNullOrEmpty()) {
-                    adapterAttractions.addAll(savedAttractions.toList())
-                } else {
-                    requestAttractions()
-                }
-            }
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.apply {
-            putParcelableArrayList(KEY_ATTRACTIONS, adapterAttractions.getAllData())
-            putString(KEY_LANGUAGE, language.name)
-        }
-
-        super.onSaveInstanceState(outState)
+        initAPIStatesObservers()
     }
 
     override fun initUI() {
-        vb.tvTitle.text = language.title
+        vb.tvTitle.text = vm.language.title
 
         vb.ibRefresh.apply {
             setTooltipTextCompat(getString(R.string.text_refresh))
@@ -69,7 +48,7 @@ class MainFragment : BaseFragment<FragMainBinding>(FragMainBinding::inflate) {
             visibility = View.GONE
 
             setOnClickListener {
-                requestAttractions()
+                requestAllAPIs()
             }
         }
 
@@ -78,15 +57,15 @@ class MainFragment : BaseFragment<FragMainBinding>(FragMainBinding::inflate) {
 
             setOnClickListener {
                 PopupMenu(requireActivity(), this).apply {
-                    Language.entries.forEach {
+                    SelectedLanguage.entries.forEach {
                         menu.add(it.localeName)
                     }
 
                     setOnMenuItemClickListener { item ->
-                        language = Language.getOrDefault(item.title.toString())
+                        vm.language = SelectedLanguage.getOrDefault(item.title.toString())
 
-                        requestAttractions()
-                        vb.tvTitle.text = language.title
+                        requestAllAPIs()
+                        vb.tvTitle.text = vm.language.title
 
                         true
                     }
@@ -99,8 +78,9 @@ class MainFragment : BaseFragment<FragMainBinding>(FragMainBinding::inflate) {
         vb.guidelineToolbar.setPercentForOrientation()
 
         vb.rvContainer.apply {
-            layoutManager = LinearLayoutManager(requireActivity())
-            adapter = adapterAttractions
+            adapter = adapterOuter
+            layoutManager = CustomizedLinearLayoutManager(requireActivity())
+            itemAnimator = null
         }
 
         vb.tvError.visibility = View.GONE
@@ -108,44 +88,80 @@ class MainFragment : BaseFragment<FragMainBinding>(FragMainBinding::inflate) {
         vb.progressbar.visibility = View.GONE
     }
 
-    private fun requestAttractions() {
-        RetrofitSingleton.attractionService.getAttractions(language.toURL()).apply {
-            printLog("request= ${request()}")
+    private fun initAPIStatesObservers() {
+        observeAPIState(
+                0,
+                vm.stateNews,
+                APIType.NEWS,
+                adapterNews,
+                vm::requestNews,
+                vm::getNews
+        )
 
-            enqueue(object : Callback<APIResponse<List<Attraction>>> {
-                init {
+        observeAPIState(
+                1,
+                vm.stateAttraction,
+                APIType.ATTRACTION,
+                adapterAttractions,
+                vm::requestAttractions,
+                vm::getAttractions
+        )
+    }
+
+    private fun requestAllAPIs() {
+        adapterOuter.clear()
+
+        vm.requestAllAPIs()
+    }
+
+    private inline fun <reified T : Parcelable> observeAPIState(
+            position: Int,
+            liveState: LiveData<RetrofitSingleton.State>,
+            typeAPI: APIType,
+            adapter: BaseRecyclerViewAdapter<*, T>,
+            crossinline request: () -> Unit,
+            crossinline getList: () -> List<T>
+    ) {
+        liveState.observe(viewLifecycleOwner) { state ->
+            val title = when (typeAPI) {
+                APIType.NEWS -> vm.language.titleNews
+                APIType.ATTRACTION -> vm.language.titleAttractions
+            }
+
+            when (state) {
+                RetrofitSingleton.State.NONE -> {
+                    request.invoke()
+                }
+
+                RetrofitSingleton.State.STARTED -> {
                     vb.progressbar.visibility = View.VISIBLE
                     vb.tvError.visibility = View.GONE
                     vb.ibRefresh.visibility = View.GONE
-                    adapterAttractions.clear()
                     vb.ibLanguage.isClickable = false
-                }
+                    vb.rvContainer.visibility = View.GONE
 
-                override fun onResponse(call: Call<APIResponse<List<Attraction>>>, response: Response<APIResponse<List<Attraction>>>) {
-                    printLog("onResponse, call= $call}")
-                    printLog("onResponse, response= $response}")
+                    adapter.clear()
 
-                    vb.progressbar.visibility = View.GONE
-
-                    if (response.isSuccessful) {
-                        adapterAttractions.addAll(response.body()?.data ?: listOf())
-
-                        vb.tvError.visibility = View.GONE
-                        vb.ibRefresh.visibility = View.GONE
-                    } else {
-                        vb.tvError.visibility = View.VISIBLE
-                        vb.ibRefresh.visibility = View.VISIBLE
-
-                        vb.tvError.text = getString(R.string.text_fetching_error)
+                    adapterOuter.apply {
+                        if (itemCount > position) {
+                            removeAt(position)
+                        }
                     }
-
-                    vb.ibLanguage.isClickable = true
                 }
 
-                override fun onFailure(call: Call<APIResponse<List<Attraction>>>, throwable: Throwable) {
-                    printLog("onFailure(.....), call= $call")
-                    printLog("onFailure(.....), throwable= $throwable")
+                RetrofitSingleton.State.SUCCESSFUL -> {
+                    vb.progressbar.visibility = View.GONE
+                    vb.tvError.visibility = View.GONE
+                    vb.ibRefresh.visibility = View.GONE
+                    vb.ibLanguage.isClickable = true
+                    vb.rvContainer.visibility = View.VISIBLE
 
+                    adapter.addAll(getList.invoke())
+
+                    adapterOuter.add(OuterRV(position, title, adapter))
+                }
+
+                else -> {
                     vb.progressbar.visibility = View.GONE
 
                     vb.tvError.visibility = View.VISIBLE
@@ -153,15 +169,27 @@ class MainFragment : BaseFragment<FragMainBinding>(FragMainBinding::inflate) {
 
                     vb.ibLanguage.isClickable = true
 
+                    vb.rvContainer.visibility = View.GONE
+
                     vb.tvError.text = getString(
-                            if (throwable.message?.contains(getString(R.string.text_timeout)) == true) {
+                            if (state == RetrofitSingleton.State.UNSUCCESSFUL) {
+                                R.string.text_fetching_error
+                            } else if (vm.msgThrowable.contains(getString(R.string.text_timeout))) {
                                 R.string.text_timeout_error
                             } else {
                                 R.string.text_unknown_error
                             }
                     )
+
+                    adapter.clear()
+
+                    adapterOuter.apply {
+                        if (itemCount > position) {
+                            removeAt(position)
+                        }
+                    }
                 }
-            })
+            }
         }
     }
 }

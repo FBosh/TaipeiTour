@@ -20,15 +20,23 @@ object RetrofitSingleton {
         callTimeout(30, TimeUnit.SECONDS)
     }.build()
 
-    private val factory = GsonBuilder().setDateFormat("YYYY-MM-DD hh:mm:ss")
+    private val gsonBuilder = GsonBuilder().apply {
+        setDateFormat("YYYY-MM-DD hh:mm:ss")
+    }
 
     private val retrofit = Retrofit.Builder().apply {
         baseUrl("https://${Constants.BASE_URL}/")
         client(client)
-        addConverterFactory(GsonConverterFactory.create(factory.create()))
+        addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
     }.build()
 
     val attractionService: AttractionService = retrofit.create(AttractionService::class.java)
+
+    val eventService: EventService = retrofit.create(EventService::class.java)
+
+    enum class State {
+        NONE, STARTED, SUCCESSFUL, UNSUCCESSFUL, FAILED
+    }
 }
 
 //region <Former codes>

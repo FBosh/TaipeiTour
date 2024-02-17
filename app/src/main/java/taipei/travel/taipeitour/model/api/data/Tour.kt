@@ -1,4 +1,4 @@
-package taipei.travel.taipeitour.model.data
+package taipei.travel.taipeitour.model.api.data
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

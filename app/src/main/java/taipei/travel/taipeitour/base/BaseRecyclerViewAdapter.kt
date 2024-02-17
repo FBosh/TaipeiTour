@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import taipei.travel.taipeitour.util.BoshLogs
+import kotlin.math.max
 
 abstract class BaseRecyclerViewAdapter<VB : ViewBinding, T>(
         private val inflateVB: (LayoutInflater, ViewGroup, Boolean) -> VB
@@ -19,11 +20,21 @@ abstract class BaseRecyclerViewAdapter<VB : ViewBinding, T>(
         holder.onBind(alData[position])
     }
 
-    final override fun getItemCount() = alData.size
+    override fun getItemCount() = alData.size
+
+    fun add(data: T) {
+        alData.add(data)
+        notifyItemInserted(itemCount)
+    }
 
     fun addAll(newData: List<T>) {
         alData.addAll(newData)
-        notifyItemRangeInserted(0, itemCount)
+        notifyItemRangeInserted(0, newData.size)
+    }
+
+    fun removeAt(position: Int) {
+        alData.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     fun replaceAll(newData: List<T>) {
@@ -34,7 +45,7 @@ abstract class BaseRecyclerViewAdapter<VB : ViewBinding, T>(
             addAll(newData)
         }
 
-        notifyItemRangeChanged(0, originalSize)
+        notifyItemRangeChanged(0, max(originalSize, itemCount))
     }
 
     fun clear() {
@@ -44,7 +55,7 @@ abstract class BaseRecyclerViewAdapter<VB : ViewBinding, T>(
         notifyItemRangeRemoved(0, originalSize)
     }
 
-    fun getAllData() = arrayListOf<T>().apply { addAll(alData) }
+    fun getAllData() = alData.toList()
 
     protected abstract fun BaseViewHolder.onBind(data: T)
 
